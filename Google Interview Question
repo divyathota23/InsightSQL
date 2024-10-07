@@ -1,15 +1,13 @@
 
-**Problem Statement:**
+Problem Statement:
 Given a dataset of employee attendance, you need to produce a summary that consolidates consecutive statuses into date ranges.
 
 
-**Using the ROW_NUMBER() window function to help with grouping consecutive records.**
+Using the ROW_NUMBER() window function to help with grouping consecutive records.
 
 
-![1727707608813](https://github.com/user-attachments/assets/d7af3d7a-96ec-4c6b-a037-d7297e239b36)
 
-
-**Solution 1**
+Solution 1
 
 WITH ranked_data AS (
 
@@ -44,10 +42,10 @@ GROUP BY employee, status, grp
 ORDER BY employee, fromdate;
 
 
-**             **
 
 
-**Solution 2**
+
+Solution 2
 
 with cte as (
 
