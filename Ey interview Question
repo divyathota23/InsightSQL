@@ -1,0 +1,14 @@
+
+SELECT c.customer_name, 
+       AVG(t.amount) AS average_transaction
+FROM Customers c
+JOIN Transactions t ON c.customer_id = t.customer_id
+WHERE c.customer_id IN (
+    SELECT customer_id
+    FROM Transactions
+    WHERE transaction_date BETWEEN '2023-09-01' AND '2023-09-30'
+    GROUP BY customer_id
+    HAVING COUNT(transaction_id) > 5
+)
+GROUP BY c.customer_name;
+
