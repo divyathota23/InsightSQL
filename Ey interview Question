@@ -1,4 +1,19 @@
+Question - You have the following two tables:
 
+ Transactions:
+ transaction_id (INT)
+ customer_id (INT)
+ transaction_date (DATE)
+ amount (DECIMAL)
+
+ Customers:
+ customer_id (INT)
+ customer_name (VARCHAR)
+
+Write a SQL query to find the average transaction amount for each customer who made more than 5 transactions in September 2023.
+
+
+solution:
 SELECT c.customer_name, 
        AVG(t.amount) AS average_transaction
 FROM Customers c
