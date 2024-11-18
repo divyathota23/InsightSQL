@@ -1,0 +1,210 @@
+***1. Joins for Building Relationships
+
+Inner Join:
+Fetch products and their corresponding stock details (only products in stock):
+
+SELECT p.product_name, i.stock_quantity
+FROM products p
+INNER JOIN inventory i ON p.product_id = i.product_id;
+
+------------------------------------------------------------------
+Left Join:
+Fetch all products, along with stock details, and include products with no stock:
+
+SELECT p.product_name, i.stock_quantity
+FROM products p
+LEFT JOIN inventory i ON p.product_id = i.product_id;
+------------------------------------------------------------------
+Self Join:
+Fetch employees and their managers (using a self-join on the employees table):
+
+
+SELECT e.employee_name AS Employee, m.employee_name AS Manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id;
+------------------------------------------------------------------
+
+***2. Aggregation & Grouping for Insights
+
+Basic Aggregation:
+Find the average price of products:
+
+
+SELECT AVG(price) AS avg_price
+FROM products;
+------------------------------------------------------------------
+GROUP BY with HAVING:
+Find product categories with total sales greater than $100,000:
+
+SELECT category, SUM(sales) AS total_sales
+FROM products
+GROUP BY category
+HAVING SUM(sales) > 100000;
+------------------------------------------------------------------
+
+Multiple Aggregations:
+Get the total revenue and the total number of sales for each product:
+
+SELECT product_name, SUM(price * quantity) AS total_revenue, COUNT(*) AS total_sales
+FROM sales
+GROUP BY product_name;
+------------------------------------------------------------------
+
+Conditional Aggregation:
+Count how many employees are male and female in each department:
+
+SELECT department, 
+       COUNT(CASE WHEN gender = 'Male' THEN 1 END) AS male_count,
+       COUNT(CASE WHEN gender = 'Female' THEN 1 END) AS female_count
+FROM employees
+GROUP BY department;
+------------------------------------------------------------------
+
+***3. Window Functions for Advanced Analysis
+
+ROW_NUMBER:
+Rank employees based on performance scores:
+
+SELECT employee_name, performance_score, 
+       ROW_NUMBER() OVER (PARTITION BY department ORDER BY performance_score DESC) AS rank
+FROM employees;
+
+------------------------------------------------------------------
+RANK vs DENSE_RANK:
+Rank products by sales with RANK and DENSE_RANK:
+
+SELECT product_name, sales, 
+       RANK() OVER (ORDER BY sales DESC) AS rank,
+       DENSE_RANK() OVER (ORDER BY sales DESC) AS dense_rank
+FROM products;
+------------------------------------------------------------------
+
+LEAD/LAG:
+Compare sales this month with last month:
+
+SELECT month, sales, 
+       LAG(sales, 1) OVER (ORDER BY month) AS last_month_sales
+FROM monthly_sales;
+------------------------------------------------------------------
+Moving Average:
+Calculate the 3-month moving average of sales:
+
+SELECT month, AVG(sales) OVER (ORDER BY month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_sales
+FROM monthly_sales;
+------------------------------------------------------------------
+
+***4. Subqueries for Solving Complex Problems
+
+Subquery with IN:
+Find customers who have placed an order:
+
+SELECT customer_id, customer_name
+FROM customers
+WHERE customer_id IN (SELECT DISTINCT customer_id FROM orders);
+------------------------------------------------------------------
+Correlated Subquery:
+Compare each product’s price to the average price in its category:
+
+SELECT product_name, price
+FROM products p
+WHERE price > (SELECT AVG(price) FROM products WHERE category = p.category);
+------------------------------------------------------------------
+Subquery with EXISTS:
+Find suppliers who have not supplied any products in the last year:
+
+SELECT supplier_id, supplier_name
+FROM suppliers s
+WHERE NOT EXISTS (SELECT 1 FROM products p WHERE p.supplier_id = s.supplier_id AND p.supply_date > CURRENT_DATE - INTERVAL '1 YEAR');
+------------------------------------------------------------------
+Nested Subquery:
+Find the second-highest salary:
+
+SELECT MAX(salary) AS second_highest_salary
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+------------------------------------------------------------------
+***5. Set Operations for Comparative Analysis
+
+UNION vs UNION ALL:
+Combine lists of students from two different courses:
+
+SELECT student_name FROM course_A
+UNION
+SELECT student_name FROM course_B;
+(To include duplicates, use UNION ALL.)
+------------------------------------------------------------------
+INTERSECT:
+Find customers who purchased from both online and physical stores:
+
+
+SELECT customer_id FROM online_orders
+INTERSECT
+SELECT customer_id FROM store_orders;
+------------------------------------------------------------------
+EXCEPT:
+Find customers who only made purchases at the online store:
+
+SELECT customer_id FROM online_orders
+EXCEPT
+SELECT customer_id FROM store_orders;
+------------------------------------------------------------------
+***6. Date and Time Analysis
+Date Difference:
+Calculate the number of days between an employee's hire date and promotion date:
+
+SELECT employee_name, DATEDIFF(promotion_date, hire_date) AS days_to_promotion
+FROM employees;
+------------------------------------------------------------------
+Extracting Parts of a Date:
+Find orders placed on weekends by extracting the weekday from the order date:
+
+SELECT order_id, order_date
+FROM orders
+WHERE EXTRACT(DAYOFWEEK FROM order_date) IN (1, 7);  -- 1 = Sunday, 7 = Saturday
+------------------------------------------------------------------
+Date Truncation:
+Aggregate data by year by truncating transaction dates:
+
+SELECT YEAR(transaction_date) AS year, SUM(amount) AS total_sales
+FROM transactions
+GROUP BY YEAR(transaction_date);
+------------------------------------------------------------------
+Rolling Sales:
+Calculate cumulative sales for each product:
+
+SELECT product_id, SUM(sales_amount) OVER (PARTITION BY product_id ORDER BY sale_date) AS cumulative_sales
+FROM sales;
+------------------------------------------------------------------
+***7. Performance Optimization for Scale
+Indexes:
+Speed up searches on frequently queried columns (e.g., product_id in the sales table):
+
+CREATE INDEX idx_product_id ON sales(product_id);
+------------------------------------------------------------------
+Query Optimization:
+Simplify joins and filter early in the query:
+
+
+SELECT customer_name, order_id, order_date
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+WHERE order_date > '2024-01-01';
+------------------------------------------------------------------
+Partitioning:
+Partition the sales table by region:
+
+CREATE TABLE sales_partitioned (
+    sale_id INT,
+    product_id INT,
+    region VARCHAR(50),
+    sales_amount DECIMAL(10, 2),
+    sale_date DATE
+)
+PARTITION BY RANGE (region);
+------------------------------------------------------------------
+EXPLAIN Statement:
+Analyze query execution plans:
+
+
+EXPLAIN SELECT * FROM sales WHERE product_id = 1001;
+
