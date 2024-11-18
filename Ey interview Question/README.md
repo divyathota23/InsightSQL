@@ -8,7 +8,7 @@ You have the following two tables:
 
 ### Transactions:
 
-```sql
+```
 transaction_id (INT)	customer_id (INT)	transaction_date (DATE)	amount (DECIMAL)
 1	                          1	                 2023-09-05	        100.00
 2	                          1	                 2023-09-10	        150.00
@@ -16,12 +16,12 @@ transaction_id (INT)	customer_id (INT)	transaction_date (DATE)	amount (DECIMAL)
 4	                          1	                 2023-09-18	        120.00
 5	                          1	                 2023-09-22	        180.00
 6	                          1	                 2023-09-25	        140.00
-7	                          2	                 2023-09-10     	300.00
+7	                          2	                 2023-09-10     	 300.00
 8	                          2	                 2023-09-14	        250.00
-9	                          2	                 2023-09-20     	500.00
+9	                          2	                 2023-09-20     	 500.00
 10	                          2	                 2023-09-22	        100.00
-11                            3	                 2023-09-05	        50.00
-12                         	  3	                 2023-09-10	        75.00
+11                               3	                 2023-09-05	        50.00
+12                         	     3	                 2023-09-10	        75.00
 13	                          3	                 2023-09-12	        80.00
 
 ```
@@ -38,7 +38,7 @@ customer_id (INT)	customer_name (VARCHAR)
 
 ### Query
 
-```sql
+```
 SELECT c.customer_name, 
        AVG(t.amount) AS average_transaction
 FROM Customers c
@@ -77,7 +77,7 @@ Finally, we use GROUP BY c.customer_name to ensure that the result includes one 
 
 ### Expected Output:
 
-```sql
+```
 customer_name	average_transaction
 Alice	         148.33
 
