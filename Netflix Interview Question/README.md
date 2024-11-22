@@ -49,7 +49,7 @@ ORDER BY review_year, review_month, avg_rating DESC;
 - We calculate the average stars for each show_id using AVG().
 - Results are grouped by review_year, review_month, and show_id.
 - The ORDER BY clause orders by year, then month, and finally the average rating in descending order.
-
+*** ***
 ### SQL Question 3: What does EXCEPT / MINUS SQL commands do?
 ***Question:*** Explain the purpose and usage of the EXCEPT (or MINUS in some SQL dialects) SQL commands.
 
@@ -68,7 +68,7 @@ EXCEPT
 SELECT user_id FROM users_who_cancelled;
 This would return the user_ids of users who have not cancelled their subscriptions.
 ```
-
+*** ***
 ### SQL Question 4: Filter Netflix Users Based on Viewing History and Subscription Status
 ***Question:*** You are given a database of Netflix’s user viewing history and their current subscription status. Write a SQL query to find all active customers who watched more than 10 episodes of a show called “Stranger Things” in the last 30 days.
 
@@ -92,7 +92,7 @@ HAVING COUNT(vh.episode_id) > 10;
 - The WHERE clause filters for users who watched "Stranger Things" in the last 30 days and are active.
 - We use GROUP BY to group by user_id and active to calculate the number of episodes watched.
 - The HAVING clause filters to return only those users who watched more than 10 episodes.
-
+*** ***
 ### SQL Question 5: What does it mean to denormalize a database?
 ***Question:*** Explain the concept and implications of denormalizing a database.
 
@@ -109,7 +109,7 @@ Cons:
 - Increased storage requirements due to data redundancy.
 - Data anomalies and inconsistencies could arise if the redundant data is not updated correctly.
 - More complex write operations, as changes need to be propagated across multiple places.
-
+*** ***
 ### SQL Question 6: Filter and Match Customer’s Viewing Records
 ***Question:*** As a data analyst at Netflix, you are asked to analyze the customer’s viewing records. You confirmed that Netflix is especially interested in customers who have been continuously watching a particular genre - ‘Documentary’ over the last month. The task is to find the name and email of those customers who have viewed more than five ‘Documentary’ movies within the last month. ‘Documentary’ could be a part of a broader genre category in the genre field (for example, ‘Documentary, History’). Therefore, the matching pattern could occur anywhere within the string.
 
