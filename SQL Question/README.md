@@ -11,7 +11,7 @@ Explanation:
 ***DENSE_RANK():*** Assigns ranks without skipping ranks for duplicate values.
 Example (Assume a Scores table):
 ```
-Student	 Subject	Marks
+Student	  Subject	Marks
 A	        Math	  90
 B	        Math	  90
 C	        Math	  80
@@ -31,11 +31,11 @@ FROM Scores;
 
 Result:
 ```
-Student	Marks	RowNumber	Rank	DenseRank
-A	        90	1             1	    1
-B	        90	2	          1	    1
-C	        80	3	          3	    2
-D	        70	4	          4	    3
+Student	 Marks	 RowNumber	Rank	DenseRank
+A	        90	   1         1	        1
+B	        90	   2	     1	        1
+C	        80	   3	     3	        2
+D	        70	   4	     4	        3
 ```
 ### Q2: Find the nth highest salary
 Query:
