@@ -31,7 +31,7 @@ FROM Scores;
 
 Result:
 ```
-Student	 Marks	 RowNumber	Rank	DenseRank
+Student	  Marks	  RowNumber	Rank	DenseRank
 A	        90	   1         1	        1
 B	        90	   2	     1	        1
 C	        80	   3	     3	        2
